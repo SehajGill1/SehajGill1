@@ -1,0 +1,254 @@
+#include <iostream>
+#include <iomanip>
+#include <stdio.h>
+#include <time.h>
+
+using namespace std;
+
+//show array function
+void showArray(int arrData[], int arrSize)
+{
+    for(int i = 0; i < arrSize; i++)
+    {
+        cout << "Array[";
+        cout << i;
+        cout << "] = ";
+        cout << arrData[i] << endl;    //print the array
+    }
+}
+
+//getTarget funtion
+int getTarget(int arr[], int length)
+{
+    return arr[rand() % length];
+}
+    
+//fill array function
+void fillArray(int arr[], int arrSize, bool bool_arr[], int bool_size)
+{
+    int val = 0;
+    
+   for(int index1 = 0; index1 < bool_size; index1++)
+   {
+       bool_arr[index1] = false;
+   }
+   int index2 = 0;
+   while(index2 < arrSize)
+   {
+       val = rand() % bool_size;
+       
+       if(bool_arr[val] == false)
+       {
+           arr[index2] = val;
+           bool_arr[val] = true;
+           index2++;
+       }
+   }
+}
+   
+ //linear search function
+int linearSearch(int arr[], int size, int value)
+{
+	int index = 0;      // Used as a subscript to search the array
+	int position = -1;  // To record the position of search value
+	bool found = false; // Flag to indicate if value was found
+
+	while (index < size && !found)
+	{
+		if (arr[index] == value) // If the value is found 
+		{
+			found = true; // Set the flag 
+			position = index; // Record the value's subscript
+		}
+		index++; // Go to the next element
+	}
+	return position; // Return the position, or -1
+}
+
+//binary search function
+int binarySearch(int array[], int size, int value)
+{
+	int first = 0,         // First array element
+		last = size - 1,       // Last array element
+		middle,                // Mid point of search
+		position = -1;         // Position of search value
+	bool found = false;    // Flag
+
+	while (!found && first <= last)
+	{
+	middle = (first + last) / 2;     // Calculate mid point
+		if (array[middle] == value)      // If value is found at mid
+		{
+			found = true;
+			position = middle;
+		}
+		else if (array[middle] > value)  // If value is in lower half
+			last = middle - 1;
+		else
+			first = middle + 1;           // If value is in upper half
+	}
+	return position;
+}
+
+//swap function
+void swap(int& a, int& b)
+{
+	int temp = a;
+	a = b;
+	b = temp;
+}
+
+//bubble sort to sort an array in ascending order
+void bubbleSort(int array[], int size)
+{
+	int maxElement;
+	int index;
+    
+	for (maxElement = size - 1; maxElement > 0; maxElement--)
+	{
+		for (index = 0; index < maxElement; index++)
+		{
+			if (array[index] > array[index + 1])
+			{
+				swap(array[index], array[index + 1]);
+			}
+		}
+	}
+}
+
+//selection sort function to sort array in ascending order
+void selectionSort(int array[], int size)
+{
+	int minIndex, minValue;
+
+	for (int start = 0; start < (size - 1); start++)
+	{
+		minIndex = start;
+		minValue = array[start];
+		for (int index = start + 1; index < size; index++)
+		{
+			if (array[index] < minValue)
+			{
+				minValue = array[index];
+				minIndex = index;
+			}
+		}
+		swap(array[minIndex], array[start]);
+	}
+}
+
+//linear search testing function
+void testLinearSearch(int arr[], int arrSize)
+{
+    int value = 0;
+    cout << "Linear Search Test" << endl;
+    clock_t start = clock();
+    
+    for(int i = 0; i < 1000000; i++)
+    {
+        int local_target = getTarget(arr, arrSize);
+        linearSearch(arr, arrSize, local_target);
+    }
+        clock_t stop = clock();
+        value = ((stop - start)/((double)CLOCKS_PER_SEC) * 1000);
+        
+        cout << "Time Elapsed = " << value << " ms" << endl;
+}
+
+//binary search testing function
+void testBinarySearch(int arr[], int arrSize)
+{
+    int value = 0;
+    cout << "Binary Search Test" << endl;
+    clock_t start = clock();
+    
+    for(int i = 0; i < 1000000; i++)
+    {
+        int local_target = getTarget(arr, arrSize);
+        binarySearch(arr, arrSize, local_target);
+    }
+    clock_t stop = clock();
+    
+    value = ((stop - start) / ((double)CLOCKS_PER_SEC) * 1000);
+    
+    cout << "Time Elapsed = " << value << " ms" << endl;
+    }
+        
+int main(){
+    
+    cout << "Sehaj Gill" << endl;
+    cout << "CS 1337-502" << endl;
+    cout << "Program 1" << endl;
+    cout << "===========" << endl;
+    
+    int DataArr[10] = {}; //data to manipulate
+	bool recordArr[100] = {}; //Record of previous value
+	
+	int DataArr2[1000] = {}; //data to manipulate
+	bool recordArr2[10000] = {}; //Record of previous value
+	
+	int asize = 10; //Size of data
+	int bsize = 100; //Size of records
+	int csize = 1000; //Size of data
+	int dsize = 10000; // size of records
+
+	int repeat = 0;
+	
+	srand(clock());          //randomise
+	
+//Bubble sort output
+	cout << "\nBubble Sort" << endl;
+    cout << "Before" << endl;
+	fillArray(DataArr, asize, recordArr, bsize);    //fill array 
+	showArray(DataArr, asize);                      //show the array before bubble sort
+	
+    cout << "After" << endl;
+	bubbleSort(DataArr, asize);                    //bubble sort the array
+	showArray(DataArr, asize);                     //show the array after bubble sort
+
+//Selection sort output	
+    cout << "\nSelection Sort" << endl;
+    cout << "Before" << endl;
+	fillArray(DataArr, asize, recordArr, bsize);    //fill array
+	showArray(DataArr, asize);                      //show array before selection sort
+	
+    cout << "After" << endl;
+	selectionSort(DataArr, asize);                  //selection sort the array
+	showArray(DataArr, asize);                      //show array after selection sort
+ 
+//Linear search output
+    	int target = getTarget(DataArr, 10);        //assign target variable
+        int result = 0;                             //local variable for result
+        
+    cout << "\nLinear search" << endl;
+    
+    fillArray(DataArr, asize, recordArr, bsize);    //fill array
+    target = getTarget(DataArr, 10);                //get target for array of size 10
+    selectionSort(DataArr, asize);                  //selection sort the array
+    showArray(DataArr, asize);                      //show the sorted array
+    result = linearSearch(DataArr, asize, target);  //assign result to find location of target
+    
+    cout << "Target: " << target << endl;    //show target value
+    cout << "Result is " << result << endl;  //show the result
+	
+//Binary search output
+    cout << "\nBinary search" << endl;
+    
+    fillArray(DataArr, asize, recordArr, bsize);     //fill array for binary search
+    target = getTarget(DataArr, 10);                 //get target for array of size 10
+    selectionSort(DataArr, asize);                   //selection sort the array
+    showArray(DataArr, asize);                       //show the sorted array
+    result = binarySearch(DataArr, asize, target);   //assign result to find the target location
+    
+    cout << "Target: " << target << endl;    //display target
+    cout << "Result is " << result << endl;  //display result
+	
+//Benchmark output for testLinearSearch and testBinarySearch
+	cout << "\nBenchmarks: " << endl;
+	
+	fillArray(DataArr2, csize, recordArr2, dsize); 
+	bubbleSort(DataArr2, csize);                    //bubble sort the array
+	
+	testLinearSearch(DataArr2, csize);              //display time elapsed for linear search
+	testBinarySearch(DataArr2, csize);              //display time elapsed for binary search
+}
